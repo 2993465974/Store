@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhi.phonemall.mapper.RecommendMapper">
+    <insert id="insert" parameterType="recommend">
+        insert into recommend(type, goodsId) values(#{type},#{goodsId})
+        <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+        <!--            <if test="type != null">-->
+        <!--                type,-->
+        <!--            </if>-->
+        <!--            <if test="goodsgid != null">-->
+        <!--                goodsgid,-->
+        <!--            </if>-->
+        <!--        </trim>-->
+        <!--        <trim prefix="values(" suffix=")" suffixOverrides=",">-->
+        <!--            <if test="type != null">-->
+        <!--                #{type},-->
+        <!--            </if>-->
+        <!--            <if test="goodsgid != null">-->
+        <!--                #{goodsgid},-->
+        <!--            </if>-->
+        <!--        </trim>-->
+    </insert>
+<!--    <delete id="del" parameterType="integer">-->
+<!--        delete-->
+<!--        from recommend-->
+<!--        where goodsId = #{goodsId}-->
+<!--          and type = #{type}-->
+<!--    </delete>-->
+    <update id="update" parameterType="recommend">
+        update recommend
+        <trim suffixOverrides=",">
+            <set>
+                <if test="type != null">
+                    type = #{type},
+                </if>
+                <if test="goodsgid != null">
+                    type = #{goodsgid},
+                </if>
+            </set>
+        </trim>
+        <where>
+            rid = #{rid}
+        </where>
+    </update>
+    <delete id="del" parameterType="integer">
+        delete from recommend <where>
+            <if test="goodsId != null">
+                goodsId = #{goodsId}
+                <if test="type != 0">
+                    and
+                </if>
+            </if>
+             <if test="type != 0">
+                 type = #{type}
+             </if>
+    </where>
+    </delete>
+</mapper>

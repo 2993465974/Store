@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhi.phonemall.mapper.OrdersMapper">
+    <resultMap id="BaseResultMap" type="com.jizhi.phonemall.entity.Orders">
+        <id column="oid" jdbcType="INTEGER" property="oid"/>
+        <result column="total" jdbcType="INTEGER" property="total"/>
+        <result column="amount" jdbcType="INTEGER" property="amount"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="paytype" jdbcType="INTEGER" property="paytype"/>
+        <result column="realname" jdbcType="VARCHAR" property="realname"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="systime" jdbcType="TIMESTAMP" property="systime"/>
+        <result column="userId" jdbcType="INTEGER" property="userid"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        oid, total, amount, `status`, paytype, realname, phone, address, systime, userId
+    </sql>
+    <select id="selectByExample" parameterType="com.jizhi.phonemall.entity.OrdersExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from orders
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from orders
+        where oid = #{oid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from orders
+        where oid = #{oid,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.jizhi.phonemall.entity.OrdersExample">
+        delete from orders
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" keyColumn="oid" keyProperty="oid" parameterType="com.jizhi.phonemall.entity.Orders"
+            useGeneratedKeys="true">
+        insert into orders (total, amount, `status`,
+                            paytype, realname, phone,
+                            address, systime, userId)
+        values (#{total,jdbcType=INTEGER}, #{amount,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+                #{paytype,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+                #{address,jdbcType=VARCHAR}, #{systime,jdbcType=TIMESTAMP}, #{userid,jdbcType=INTEGER})
+    </insert>
+    <insert id="insertSelective" keyColumn="oid" keyProperty="oid" parameterType="com.jizhi.phonemall.entity.Orders"
+            useGeneratedKeys="true">
+        <selectKey keyProperty="oid" resultType="integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="total != null">
+                total,
+            </if>
+            <if test="amount != null">
+                amount,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+            <if test="paytype != null">
+                paytype,
+            </if>
+            <if test="realname != null">
+                realname,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="systime != null">
+                systime,
+            </if>
+            <if test="userid != null">
+                userId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="total != null">
+                #{total,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="paytype != null">
+                #{paytype,jdbcType=INTEGER},
+            </if>
+            <if test="realname != null">
+                #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="systime != null">
+                #{systime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.jizhi.phonemall.entity.OrdersExample" resultType="java.lang.Long">
+        select count(*) from orders
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update orders
+        <set>
+            <if test="record.oid != null">
+                oid = #{record.oid,jdbcType=INTEGER},
+            </if>
+            <if test="record.total != null">
+                total = #{record.total,jdbcType=INTEGER},
+            </if>
+            <if test="record.amount != null">
+                amount = #{record.amount,jdbcType=INTEGER},
+            </if>
+            <if test="record.status != null">
+                `status` = #{record.status,jdbcType=INTEGER},
+            </if>
+            <if test="record.paytype != null">
+                paytype = #{record.paytype,jdbcType=INTEGER},
+            </if>
+            <if test="record.realname != null">
+                realname = #{record.realname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.phone != null">
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.systime != null">
+                systime = #{record.systime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.userid != null">
+                userId = #{record.userid,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update orders
+        set oid = #{record.oid,jdbcType=INTEGER},
+        total = #{record.total,jdbcType=INTEGER},
+        amount = #{record.amount,jdbcType=INTEGER},
+        `status` = #{record.status,jdbcType=INTEGER},
+        paytype = #{record.paytype,jdbcType=INTEGER},
+        realname = #{record.realname,jdbcType=VARCHAR},
+        phone = #{record.phone,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        systime = #{record.systime,jdbcType=TIMESTAMP},
+        userId = #{record.userid,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jizhi.phonemall.entity.Orders">
+        update orders
+        <set>
+            <if test="total != null">
+                total = #{total,jdbcType=INTEGER},
+            </if>
+            <if test="amount != null">
+                amount = #{amount,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="paytype != null">
+                paytype = #{paytype,jdbcType=INTEGER},
+            </if>
+            <if test="realname != null">
+                realname = #{realname,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="systime != null">
+                systime = #{systime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="userid != null">
+                userId = #{userid,jdbcType=INTEGER},
+            </if>
+        </set>
+        where oid = #{oid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jizhi.phonemall.entity.Orders">
+        update orders
+        set total    = #{total,jdbcType=INTEGER},
+            amount   = #{amount,jdbcType=INTEGER},
+            `status` = #{status,jdbcType=INTEGER},
+            paytype  = #{paytype,jdbcType=INTEGER},
+            realname = #{realname,jdbcType=VARCHAR},
+            phone    = #{phone,jdbcType=VARCHAR},
+            address  = #{address,jdbcType=VARCHAR},
+            systime  = #{systime,jdbcType=TIMESTAMP},
+            userId   = #{userid,jdbcType=INTEGER}
+        where oid = #{oid,jdbcType=INTEGER}
+    </update>
+    <select id="findAllByStatus" parameterType="integer" resultType="orders">
+        select * from orders
+        <where>
+            <if test="status == null">
+
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </where>
+    </select>
+</mapper>

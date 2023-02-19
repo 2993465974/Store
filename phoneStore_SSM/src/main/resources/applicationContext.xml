@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx
+        https://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--1.先去读取数据库的配置文件：xx.properties-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <!--2.[IOC]定义数据源:id  class-->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <!--2.1设置数据源属性 name=数据库的驱动    value-->
+        <property name="driverClassName" value="${db.driverClassName}"></property>
+        <!--2.2设置数据源属性 name=数据库的链接    value-->
+        <property name="url" value="${db.url}"></property>
+        <!--2.3设置数据源属性 name=数据库的用户名  value-->
+        <property name="username" value="${db.username}"></property>
+        <!--2.4设置数据源属性 name=数据库的密码    value-->
+        <property name="password" value="${db.password}"></property>
+    </bean>
+
+    <!--3.[IOC]定义事务管理器:数据源事务管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--        3.1设置事务管理器的属性-->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--4.开启事务的注解，关联定义过的管理器-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--5.[IOC]定义MyBatis的控制反转(IOC):核心类是SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--5.1设置MyBatis的属性： name=数据源的id ref=数据源的id-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--5.2设置mybatis配置文件所在的位置 name=数据库驱动 value-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/><!--配置mybatis全局配置文件-->
+        <!--5.3配置映射文件-->
+        <property name="mapperLocations" value="classpath:mapper/*.xml"/><!--配置在resources/mapper下的映射文件-->
+        <!--5.4开启实体类的别名配置-->
+        <property name="typeAliasesPackage" value="com.jizhi.phonemall.entity" />
+    </bean>
+
+    <!--6.[IOC]定义MyBatis接口扫描信息 核心类是MapperScannerConfig-->
+    <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <!--扫描的基础包:xx.xxx.xxx.mapper-->
+        <property name="basePackage" value="com.jizhi.phonemall.mapper"/>
+    </bean>
+    <!--7.扫描service层、Mapper层的注解-->
+    <context:component-scan base-package="com.jizhi.phonemall"/>
+</beans>

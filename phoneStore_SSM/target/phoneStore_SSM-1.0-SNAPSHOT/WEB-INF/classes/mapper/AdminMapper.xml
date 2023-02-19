@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhi.phonemall.mapper.AdminMapper">
+    <select id="checkAdmin" parameterType="string" resultType="Admin">
+        select * from admin where username = #{username} and password = #{password}
+    </select>
+    <select id="findAdminByUsername" parameterType="string" resultType="Admin">
+        select * from admin where username = #{username}
+    </select>
+    <insert id="add" parameterType="Admin">
+        insert into admin(username, password) VALUES(#{username},#{password})
+    </insert>
+    <delete id="del" parameterType="integer">
+        delete from admin where id = #{id}
+    </delete>
+    <update id="update" parameterType="Admin">
+        update admin set password = #{password} where username = #{username}
+    </update>
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhi.phonemall.mapper.GoodsMapper">
+    <select id="findByName" parameterType="string" resultType="Goods">
+        <!--查询全部-->
+        <if test="gname == null">
+            select * from goods order by gid desc
+        </if>
+        <!--模糊查询-->
+        <if test="gname != null">
+            select * from goods where gname like concat('%',#{gname},'%') order by gid desc
+        </if>
+    </select>
+    <select id="findTotal" parameterType="Integer" resultType="int">
+        <if test="categoryId != null">
+            select count(*) from goods where categoryId = #{categoryId}
+        </if>
+        <if test="categoryId == null">
+            select count(*) from goods
+        </if>
+    </select>
+    <select id="find" parameterType="Integer" resultType="Goods">
+        select * from goods
+        <if test="status != 0 ">
+            ,recommend
+        </if>
+        <where>
+            <!--按照状态查询-->
+            <if test="status != 0">
+                recommend.type = #{status}
+                and
+                recommend.goodsId = goods.gid
+                <if test="categoryId!=null ">
+                    and
+                </if>
+            </if>
+            <if test="status == 0">
+
+            </if>
+            <if test="categoryId==null">
+
+            </if>
+
+            <!--分类分页全部-->
+            <if test="categoryId!=null ">
+                categoryId = #{categoryId}
+            </if>
+
+
+
+        </where>
+
+    </select>
+    <!--添加商品-->
+    <!--    应该使用if判断-->
+    <insert id="add" parameterType="goods">
+        <!--
+                 insert into goods(gname,images1,images2,price,stock,intro,categoryId)
+                 values(#{gname},#{images1},#{images2},#{price},#{stock},#{intro},#{categoryId})
+        -->
+        insert into goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="gname != null">gname,</if>
+            <if test="images1 != null">images1,</if>
+            <if test="images2 != null">images2,</if>
+            <if test="price != null">price,</if>
+            <if test="stock != null">stock,</if>
+            <if test="intro != null">intro,</if>
+            <if test="categoryId != null">categoryId,</if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="gname != null">#{gname},</if>
+            <if test="images1 != null">#{images1},</if>
+            <if test="images2 != null">#{images2},</if>
+            <if test="price != null">#{price},</if>
+            <if test="stock != null">#{stock},</if>
+            <if test="intro != null">#{intro},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+        </trim>
+    </insert>
+
+    <!--删除商品    -->
+
+    <delete id="del" parameterType="int">
+        delete
+        from goods
+        where gid = #{gid}
+    </delete>
+    <!--修改商品-->
+    <update id="update" parameterType="goods">
+        <!--
+        update goods set gname = #{gname},images1=#{images1},images2=#{images2},price=#{price},stock=#{stock},
+        intro=#{intro},CategoryId=#{CategoryId} where gid = #{gid}
+        -->
+
+        update goods
+        <set>
+            <trim suffixOverrides=",">
+                <if test="gname != null">gname=#{gname},</if>
+                <if test="images1 != null">images1=#{images1},</if>
+                <if test="images2 != null">images2=#{images2},</if>
+                <if test="price != null">price=#{price},</if>
+                <if test="stock != null">stock=#{stock},</if>
+                <if test="intro != null">intro=#{intro},</if>
+                <if test="categoryId != null">categoryId=#{categoryId},</if>
+                <if test="topScroll != null">topScroll=#{topScroll},</if>
+                <if test="topLarge != null">topLarge=#{topLarge},</if>
+                <if test="topSmall != null">topSmall=#{topSmall},</if>
+            </trim>
+        </set>
+        where gid = #{gid}
+    </update>
+</mapper>

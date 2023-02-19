@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jizhi.phonemall.mapper.CategoryMapper">
+    <!--查询全部以及模糊查询 -->
+    <select id="findAll" parameterType="string" resultType="category">
+        <if test="cname != null">
+            select * from category where cname like concat('%',#{cname},'%') order by cid desc
+        </if>
+        <if test="cname == null">
+            select * from category order by cid desc
+        </if>
+    </select>
+    <!--根据cid 进行查询-->
+    <select id="findById" parameterType="Integer" resultType="category">
+    select * from category where cid = #{cid}
+    </select>
+    <!--添加分类-->
+<!--suffixOverrides在结尾处去除逗号-->
+    <insert id="add" parameterType="category">
+    insert into category(cname) values(#{cname})
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--            <if test="cname != null">-->
+<!--                canme,-->
+<!--            </if>-->
+<!--        </trim>-->
+
+<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--            <if test="cname != null">-->
+<!--                #{cname},-->
+<!--            </if>-->
+<!--        </trim>-->
+    </insert>
+    <!--删除分类-->
+    <delete id="del" parameterType="Integer">
+        delete from category where cid = #{cid}
+    </delete>
+    <!--修改分类-->
+    <update id="update" parameterType="category">
+        update category set cname = #{cname} where cid = #{cid}
+    </update>
+</mapper>

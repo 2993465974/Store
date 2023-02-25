@@ -1,5 +1,5 @@
-create datavase phonestore;
-user phonestore;
+create DATABASE phonestore;
+use phonestore;
 create table category(
     cid int primary key auto_increment,
     cname varchar(55) not null unique

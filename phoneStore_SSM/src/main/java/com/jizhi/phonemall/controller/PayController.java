@@ -188,7 +188,7 @@ public class PayController {
     @RequestMapping("/notify_url")
     @ResponseBody
     public String payNotify(HttpServletRequest request) throws Exception {
-        System.out.println("???????");
+        // System.out.println("???????");
         // 获取支付宝POST过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();

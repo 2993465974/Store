@@ -20,7 +20,6 @@
  * 如果没有收到该页面返回的 success 
  * 建议该页面只做支付成功的业务逻辑处理，退款的处理请以调用退款查询接口的结果为准。
  */
-	System.out.println("这他妈在这？");
  
 	//获取支付宝POST过来反馈信息
 	Map<String,String> params = new HashMap<String,String>();

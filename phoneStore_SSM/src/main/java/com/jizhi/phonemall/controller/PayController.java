@@ -66,7 +66,6 @@ public class PayController {
                 order.setPaytype(paytype);
                 orderService.updateInfo(order);
                 session.setAttribute(INDENT_KEY,null);
-                System.out.println(order);
                 return "../front/payok";
             }else{
                 return "redirect:/pay/goAliPay/"+oid;
@@ -82,7 +81,6 @@ public class PayController {
     @ResponseBody
     public String goAliPay(@PathVariable Integer oid) throws Exception {
         Orders orders = orderService.findOrdersById(oid);
-        System.out.println(orders);
         //获得初始化的AlipayClient
         AlipayClient alipayClient = new DefaultAlipayClient(
                 AlipayConfig.gatewayUrl,
@@ -134,7 +132,7 @@ public class PayController {
     @RequestMapping("/return_url")
     @ResponseBody
     public String payReturn(HttpServletRequest request,HttpSession session) throws Exception {
-        System.out.println("???");
+
         // 获取支付宝GET过来反馈信息
         Map<String, String> params = new HashMap<String, String>();
         Map<String, String[]> requestParams = request.getParameterMap();

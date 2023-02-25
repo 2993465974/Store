@@ -22,7 +22,6 @@
  *************************页面功能说明*************************
  * 该页面仅做页面展示，业务逻辑处理请勿在该页面执行
  */
-	System.out.println("这他妈在这？");
 	//获取支付宝GET过来反馈信息
 	Map<String,String> params = new HashMap<String,String>();
 	Map<String,String[]> requestParams = request.getParameterMap();

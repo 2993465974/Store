@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
         //未能返回自增id
         ordersMapper.insertSelective(orders);
         int oid = ordersMapper.findAllByUidAndPaytype(orders.getUserid(),orders.getPaytype()).getOid();
-        System.out.println("oid:" + oid);
+
         return oid;
     }
 
